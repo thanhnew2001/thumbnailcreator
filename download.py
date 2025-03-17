@@ -1,21 +1,15 @@
-curl -X POST https://thumbnail.photoslab.org/edit_image \
-     -H "Content-Type: application/json" \
-     -d '{
-           "image_url": "https://replicate.delivery/xezq/87wB8iexhQVRGy3o5bhfEcmzupqoLdnz2dAeojBsM6admKzoA/out-0.webp",
-           "font_name": "EmblemaOne-Regular.ttf",
-           "color": "224,17,95",
-           "position": "middle"
-         }'
-
-
-
 import requests
 
 # URL of the image from Replicate
 image_url = 'https://replicate.delivery/xezq/87wB8iexhQVRGy3o5bhfEcmzupqoLdnz2dAeojBsM6admKzoA/out-0.webp'
 
-# Send a GET request to fetch the image
-response = requests.get(image_url)
+# Define the custom User-Agent
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+}
+
+# Send a GET request to fetch the image with the custom User-Agent
+response = requests.get(image_url, headers=headers)
 
 # Check if the request was successful (status code 200)
 if response.status_code == 200:
