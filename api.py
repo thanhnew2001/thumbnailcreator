@@ -13,8 +13,13 @@ app = Flask(__name__)
 
 def generate_image_with_text(image_url, font_name, color, position, text="Do you accept credit card?"):
     try:
-        # Fetch image from URL
-        response = requests.get(image_url, timeout=10)
+        # Define a browser-like User-Agent
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+        }
+
+        # Fetch image from URL with custom User-Agent
+        response = requests.get(image_url, headers=headers, timeout=10)
         response.raise_for_status()  # Raise error for bad HTTP response
         image = Image.open(BytesIO(response.content))
     except requests.RequestException as e:

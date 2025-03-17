@@ -1,4 +1,4 @@
-curl -X POST http://127.0.0.1:5000/edit_image \
+curl -X POST https://thumbnail.photoslab.org/edit_image \
      -H "Content-Type: application/json" \
      -d '{
            "image_url": "https://replicate.delivery/xezq/87wB8iexhQVRGy3o5bhfEcmzupqoLdnz2dAeojBsM6admKzoA/out-0.webp",
