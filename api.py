@@ -141,6 +141,7 @@ def edit_image():
         font_name = data.get('font_name')
         color = data.get('color')
         position = data.get('position')
+        text = data.get('text', "Do you accept credit card?")  # New parameter with a default value
 
         # Validate inputs
         if not image_url or not font_name or not color or not position:
@@ -148,7 +149,7 @@ def edit_image():
             return jsonify({"error": "Missing required parameters"}), 400
 
         # Generate the edited image
-        sub_image_url, error_message = generate_image_with_text(image_url, font_name, color, position)
+        sub_image_url, error_message = generate_image_with_text(image_url, font_name, color, position, text)  # Pass the new text parameter
 
         if sub_image_url:
             return jsonify({"sub_image_url": sub_image_url}), 200
