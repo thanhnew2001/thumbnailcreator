@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %
 
 app = Flask(__name__)
 
-def generate_image_with_text(image_url, font_name, color, position, text="Do you accept credit card?"):
+def generate_image_with_text(image_url, font_name, color, position, text="Do you accept credit card?", text_size=36):
     try:
         # Define a browser-like User-Agent
         headers = {
@@ -39,7 +39,7 @@ def generate_image_with_text(image_url, font_name, color, position, text="Do you
             logging.error(f"Font not found: {font_path}")
             return None, "Font file not found"
 
-        font = ImageFont.truetype(font_path, 36)  # Using 36pt as a default font size
+        font = ImageFont.truetype(font_path, text_size)  # Using the specified text_size
     except IOError as e:
         logging.error(f"Error loading font: {e}")
         return None, "Font file is invalid or missing"
@@ -141,7 +141,8 @@ def edit_image():
         font_name = data.get('font_name')
         color = data.get('color')
         position = data.get('position')
-        text = data.get('text', "Do you accept credit card?")  # New parameter with a default value
+        text = data.get('text', "Do you accept credit card?")  # Existing parameter with a default value
+        text_size = data.get('text_size', 36)  # New parameter with a default value of 36
 
         # Validate inputs
         if not image_url or not font_name or not color or not position:
@@ -149,7 +150,7 @@ def edit_image():
             return jsonify({"error": "Missing required parameters"}), 400
 
         # Generate the edited image
-        sub_image_url, error_message = generate_image_with_text(image_url, font_name, color, position, text)  # Pass the new text parameter
+        sub_image_url, error_message = generate_image_with_text(image_url, font_name, color, position, text, text_size)  # Pass the new text_size parameter
 
         if sub_image_url:
             return jsonify({"sub_image_url": sub_image_url}), 200
