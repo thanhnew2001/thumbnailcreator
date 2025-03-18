@@ -69,7 +69,8 @@ def generate_image_with_text(image_url, font_name, color, position, text="Do you
 
         return lines
 
-    max_width = image_width - 40  # 20 pixels padding on each side
+    # Calculate max_width to ensure at least 50% margin on both sides
+    max_width = image_width * 0.5  # 50% of the image width
     wrapped_lines = wrap_text(text, font, max_width)
 
     # Define line height and extra spacing
