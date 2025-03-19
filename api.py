@@ -116,7 +116,7 @@ def generate_image_with_text(image_url, font_name, color, position, text="Do you
         background_x0 = x_offset - background_padding
         background_y0 = y_offset - background_padding
         background_x1 = x_offset + line_width + background_padding
-        background_y1 = y_offset + line_height + background_padding + line_spacing  # Adjusted to include line spacing
+        background_y1 = y_offset + line_height + background_padding  # Adjusted to cover the text height only
 
         # Draw background rectangle if background_color is provided
         if background_color:
