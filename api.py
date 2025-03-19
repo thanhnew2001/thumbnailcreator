@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %
 
 app = Flask(__name__)
 
-def generate_image_with_text(image_url, font_name, color, position, text="Do you accept credit card?", text_size=36):
+def generate_image_with_text(image_url, font_name, color, position, text="Do you accept credit card?", text_size=36, background_color=None):
     try:
         # Define a browser-like User-Agent
         headers = {
@@ -105,11 +105,31 @@ def generate_image_with_text(image_url, font_name, color, position, text="Do you
 
     shadow_color = (255, 255, 255)  # White shadow for contrast
 
-    # Add the wrapped text with a shadow effect
+    # Add the wrapped text with a shadow effect and background
     y_offset = y_position
     for line in wrapped_lines:
         line_width = draw.textlength(line, font=font)
         x_offset = (image_width - line_width) // 2  # Center text horizontally
+
+        # Calculate background rectangle dimensions
+        background_padding = 10  # Padding around the text
+        background_x0 = x_offset - background_padding
+        background_y0 = y_offset - background_padding
+        background_x1 = x_offset + line_width + background_padding
+        background_y1 = y_offset + line_height + background_padding
+
+        # Draw background rectangle if background_color is provided
+        if background_color:
+            # Convert background_color from string to tuple
+            try:
+                bg_color = tuple(map(int, background_color.split(',')))
+                if len(bg_color) != 3 or not all(0 <= c <= 255 for c in bg_color):
+                    raise ValueError("Invalid RGB values for background color")
+            except Exception as e:
+                logging.error(f"Invalid background color format: {e}")
+                bg_color = (0, 0, 0, 128)  # Default to semi-transparent black if invalid
+
+            draw.rectangle([background_x0, background_y0, background_x1, background_y1], fill=bg_color)
 
         # Draw thicker shadow (offset to create a shadow effect)
         shadow_offsets = [(2, 2), (1, 1), (3, 3)]  # Multiple offsets for thicker shadow
@@ -147,6 +167,7 @@ def edit_image():
         position = data.get('position')
         text = data.get('text', "Do you accept credit card?")  # Existing parameter with a default value
         text_size = data.get('text_size', 36)  # New parameter with a default value of 36
+        background_color = data.get('background_color', None)  # New parameter for background color
 
         # Validate inputs
         if not image_url or not font_name or not color or not position:
@@ -154,7 +175,7 @@ def edit_image():
             return jsonify({"error": "Missing required parameters"}), 400
 
         # Generate the edited image
-        sub_image_url, error_message = generate_image_with_text(image_url, font_name, color, position, text, text_size)  # Pass the new text_size parameter
+        sub_image_url, error_message = generate_image_with_text(image_url, font_name, color, position, text, text_size, background_color)  # Pass the new background_color parameter
 
         if sub_image_url:
             return jsonify({"sub_image_url": sub_image_url}), 200
