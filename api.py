@@ -111,8 +111,11 @@ def generate_image_with_text(image_url, font_name, color, position, text="Do you
         line_width = draw.textlength(line, font=font)
         x_offset = (image_width - line_width) // 2  # Center text horizontally
 
-        # Draw shadow (offset to create a shadow effect)
-        draw.text((x_offset + 2, y_offset + 2), line, font=font, fill=shadow_color)
+        # Draw thicker shadow (offset to create a shadow effect)
+        shadow_offsets = [(2, 2), (1, 1), (3, 3)]  # Multiple offsets for thicker shadow
+        for offset in shadow_offsets:
+            draw.text((x_offset + offset[0], y_offset + offset[1]), line, font=font, fill=shadow_color)
+
         # Draw main text
         draw.text((x_offset, y_offset), line, font=font, fill=text_color)
 
