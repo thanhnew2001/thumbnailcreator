@@ -133,7 +133,7 @@ def generate_image_with_text(image_url, font_name, color, position, text="Do you
             draw.rectangle([background_x0, background_y0, background_x1, background_y1], fill=bg_color)
 
         # Draw thicker shadow (offset to create a shadow effect)
-        shadow_offsets = [(2, 2), (1, 1), (3, 3)]  # Multiple offsets for thicker shadow
+        shadow_offsets = [(4, 4), (2, 2), (6, 6)]  # Increased offsets for a thicker shadow
         for offset in shadow_offsets:
             draw.text((x_offset + offset[0], y_offset + offset[1]), line, font=font, fill=shadow_color)
 
