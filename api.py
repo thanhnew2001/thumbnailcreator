@@ -129,6 +129,7 @@ def generate_image_with_text(image_url, font_name, color, position, text="Do you
                 logging.error(f"Invalid background color format: {e}")
                 bg_color = (0, 0, 0, 128)  # Default to semi-transparent black if invalid
 
+            # Draw the background rectangle
             draw.rectangle([background_x0, background_y0, background_x1, background_y1], fill=bg_color)
 
         # Draw thicker shadow (offset to create a shadow effect)
